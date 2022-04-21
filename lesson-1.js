@@ -10,10 +10,24 @@ const isPrime = (number) => {
   return true;
 };
 
+//process.argv это массив строк (string[]), поэтому typeof process.argv[N]  всегда будет 'string'
+const isArgsTypeOfNumber = (...args) => {
+  for (const key in args) {
+    if (isNaN(args[key]) || !args[key].trim()) {
+      console.log(colors.red(`Argument '${args[key]}' - is not a number`));
+      return false;
+    }
+  }
+  return true;
+}
+
 let count = 1;
+let isPrimeNumber = false;
 
 const from = process.argv[2];
 const to = process.argv[3];
+
+if (!isArgsTypeOfNumber(from, to)) process.exit(); // Если один из аргументов не число завершаем программу
 
 for (let number = from; number <= to; number++) {
   let colorer = colors.green;
@@ -30,5 +44,9 @@ for (let number = from; number <= to; number++) {
     }
 
     console.log(colorer(number));
+
+    isPrimeNumber = true;
   }
 }
+
+if (!isPrimeNumber) console.log(colors.red('There are no prime numbers'))
